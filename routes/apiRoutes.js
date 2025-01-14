@@ -28,12 +28,6 @@ router.get(
   authMiddleware.verifyToken,
   sessionController.getSessionById
 );
-router.put(
-  "/sessions/:id",
-  authMiddleware.verifyToken,
-  authMiddleware.isFormateur,
-  sessionController.updateSession
-);
 router.delete(
   "/sessions/:id",
   authMiddleware.verifyToken,

@@ -31,7 +31,7 @@ const User = {
 
   async deleteById(id) {
     const query = "DELETE FROM users WHERE id = ?";
-    const [result] = await db.execute(query, [id]);
+    await db.execute(query, [id]);
   },
 
   async findByEmail(email) {

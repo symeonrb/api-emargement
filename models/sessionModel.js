@@ -29,6 +29,11 @@ const Session = {
     return result.insertId;
   },
 
+  async deleteById(id) {
+    const query = "DELETE FROM sessions WHERE id = ?";
+    await db.execute(query, [id]);
+  },
+
   async getAll() {
     const query = "SELECT * FROM sessions";
     const [rows] = await db.execute(query);

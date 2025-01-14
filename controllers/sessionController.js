@@ -42,12 +42,30 @@ const sessionController = {
     }
   },
 
-  async updateSession(req, res) {
-    // Ajoutez la logique de mise à jour ici
-  },
-
   async deleteSession(req, res) {
-    // Ajoutez la logique de suppression ici
+    try {
+      const sessionId = req.params.id;
+      const session = await Session.getById(sessionId);
+      if (!session) {
+        return res.status(404).json({ message: "Session introuvable" });
+      }
+
+      // Check if the user is the formateur who created the session
+      const auth_id = req.user.id; // Assuming the formateur_id comes from the JWT
+      if (session.formateur_id !== auth_id) {
+        return res.status(403).json({
+          error: "Vous n'êtes pas autorisé à supprimer cette session",
+        });
+      }
+
+      await Session.deleteById(sessionId);
+      res.status(200).json({ message: "Session supprimée avec succès" });
+    } catch (error) {
+      console.log(error.message);
+      res
+        .status(500)
+        .json({ error: "Erreur lors de la suppression de la session" });
+    }
   },
 };
 
