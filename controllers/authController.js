@@ -21,12 +21,11 @@ const authController = {
     const { email, password } = req.body;
     try {
       const user = await User.findByEmail(email);
-      if (!user)
-        return res.status(404).json({ error: "Utilisateur introuvable" });
+      if (!user) return res.status(404).json({ message: "User not found" });
 
       const match = await bcrypt.compare(password, user.password);
       if (!match)
-        return res.status(401).json({ error: "Mot de passe incorrect" });
+        return res.status(401).json({ message: "Mot de passe incorrect" });
 
       const token = jwt.sign(
         { id: user.id, role: user.role },
